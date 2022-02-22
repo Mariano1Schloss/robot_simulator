@@ -2,11 +2,11 @@
 
 ## How to use 
 
-+ compilation
++ compilation with maven
 ```
 mvn compile 
 ```
-+ compilation & execution
++ compilation & execution with maven
 ```
 mvn compile exec:java -Dexec.mainClass="main.TestAppli"
 ```
