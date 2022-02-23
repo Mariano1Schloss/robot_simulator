@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import burger.SmartTurtlebot;
+import burger.RandomTurtlebot;
 import burger.RealTurtlebot;
 import burger.Orientation;
 import mqtt.Message;
@@ -163,7 +164,8 @@ public class TurtlebotFactory implements SimulationComponent {
 	    	if(debug == 1) {
 	    		System.out.println("Create simulated robot");
 	    	}
-	    	turtle = new SmartTurtlebot(id, name, seed, field, clientMqtt, debug);
+	    	//turtle = new SmartTurtlebot(id, name, seed, field, clientMqtt, debug);
+	    	turtle = new RandomTurtlebot(id, name, seed, field, clientMqtt, debug);
 	    }
 	    mesRobots.put(name, turtle);
 	    return turtle;
