@@ -169,6 +169,7 @@ public class SmartTurtlebot extends Turtlebot{
 
 	public void move(int step) {
 		String actionr = "move_forward";
+		String result = x + "," + y + "," + orientation + "," + grid.getCellsToString(y,x) + ",";
 		for(int i = 0; i < step; i++) {
 			EmptyCell[] ec = grid.getAdjacentEmptyCell(x,y);
 			if(orientation == Orientation.up) {
@@ -238,7 +239,7 @@ public class SmartTurtlebot extends Turtlebot{
 		}
 		if(debug==2){
 			try{
-				writer.write(x + "," + y + "," + orientation + "," + grid.getCellsToString(y,x) + "," + actionr); 
+				writer.write(result + actionr); 
 				writer.newLine();
 				writer.flush();
 			} catch(IOException ioe){
