@@ -27,12 +27,14 @@ public class TurtlebotFactory implements SimulationComponent {
 	protected int waittime;
 	protected int seed;
 	protected int field;
+	protected String sttime;
 	
-	public TurtlebotFactory() {
+	public TurtlebotFactory(String sttime) {
 		this.simulation = 0;
 		this.debug = 0;
 		this.display = 0;
 		this.waittime = 0;
+		this.sttime = sttime;
 		mesRobots = new HashMap<String, Turtlebot>();
 	}
 
@@ -83,6 +85,9 @@ public class TurtlebotFactory implements SimulationComponent {
 			}catch(InterruptedException ie){
 				System.out.println(ie);
 			}
+		}
+		for(Turtlebot t: mesRobots.values()) {
+			t.setGoalReached(true);
 		}
 		System.out.println("END");
 	}
@@ -160,12 +165,18 @@ public class TurtlebotFactory implements SimulationComponent {
 	    		System.out.println("Create real robot");
 	    	}
 	    	turtle = new RealTurtlebot(id, name, seed, field, clientMqtt, debug);
+	    	if(debug==2 && sttime != null) {
+	    		turtle.setLog(sttime);
+	    	}
 	    } else {
 	    	if(debug == 1) {
 	    		System.out.println("Create simulated robot");
 	    	}
-	    	//turtle = new SmartTurtlebot(id, name, seed, field, clientMqtt, debug);
-	    	turtle = new RandomTurtlebot(id, name, seed, field, clientMqtt, debug);
+	    	turtle = new SmartTurtlebot(id, name, seed, field, clientMqtt, debug);
+	    	if(debug==2 && sttime != null) {
+	    		turtle.setLog(sttime);
+	    	}
+	    	//turtle = new RandomTurtlebot(id, name, seed, field, clientMqtt, debug);
 	    }
 	    mesRobots.put(name, turtle);
 	    return turtle;

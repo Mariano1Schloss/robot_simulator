@@ -13,6 +13,9 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /* This class defines the different operations that the robot can do on the grid */
 
@@ -26,8 +29,10 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 	//protected boolean waitAnswer = false;
 	protected boolean goalReached;	
 	protected int seed;
+	protected BufferedWriter writer;
 	protected int field;
-
+	protected String sttime;
+	
 	protected Turtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
 		this.name = name;
 		this.debug = debug;
@@ -39,16 +44,36 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 		this.field = field;
 	}
 
+	public void setLog(String st) {
+		sttime = st;
+		if(debug==2){
+			try{
+				writer = new BufferedWriter(new FileWriter(sttime+"/"+name+".log")); 
+			} catch(IOException ioe){
+				System.out.println(ioe);
+				System.exit(1);
+			}
+		}
+	}
+
 	public int getId() {
 		return id;
 	}
 
-	public boolean isGoalReached(){
+	public boolean isGoalReached(){		
 		return goalReached;
 	}
 
 	public void setGoalReached(boolean gr){
 		goalReached = gr;
+		if(debug==2){
+			try{
+				writer.write("goal reached"); 
+				writer.close();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}	
 
 	protected abstract void init() ;

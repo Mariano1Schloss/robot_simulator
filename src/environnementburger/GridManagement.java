@@ -49,7 +49,7 @@ public class GridManagement implements SimulationComponent {
 		clientMqtt.subscribe("robot/nextPosition");	
 		clientMqtt.subscribe("configuration/nbRobot");	
 		clientMqtt.subscribe("configuration/nbObstacle");	
-		clientMqtt.subscribe("configuration/nbRobot");
+		//clientMqtt.subscribe("configuration/nbRobot");
 		clientMqtt.subscribe("configuration/seed");	
 		clientMqtt.subscribe("configuration/display");	
 		clientMqtt.subscribe("configuration/debug");	
@@ -261,7 +261,7 @@ public class GridManagement implements SimulationComponent {
 			}
 			for (int i = 2; i < nbRobots+2; i++) {
 				int[] pos = grid.locate();
-				EmptyCell ec = (EmptyCell)grid.getCell(pos[1], pos[0]);
+				// ec = (EmptyCell)grid.getCell(pos[1], pos[0]);
 				goals.add(new Goal(pos[0],pos[1],-1*i));
 				if(display == 1) {
 					cg.setBlockColor(pos[0], pos[1], colorgoal);

@@ -7,6 +7,9 @@ import mqtt.NoMqtt;
 import java.awt.Color;
 import org.json.simple.JSONObject;
 import components.TurtlebotFactory;
+import java.io.File;
+import java.time.LocalDateTime;  
+import java.time.format.DateTimeFormatter;  
 
 public class TestAppli {
 	
@@ -30,6 +33,9 @@ public class TestAppli {
 	protected static Color COLOROTHER;
 
 	public static void main(String[] args) throws Exception {
+		String sttime = "log-"+java.time.LocalDateTime.now();
+		File f = new File(sttime);
+		f.mkdir();
 		IniFile ifile= new IniFile("prop.ini");
 		TestAppli.MQTT = ifile.getIntValue("configuration","mqtt");
 		TestAppli.WAITTIME = ifile.getIntValue("configuration","waittime");
@@ -65,7 +71,7 @@ public class TestAppli {
 		mqttClient.setAppli(env);		
 		env.initSubscribe();	
 		
-		TurtlebotFactory tf = new TurtlebotFactory();
+		TurtlebotFactory tf = new TurtlebotFactory(sttime);
 		tf.setMessage(mqttClient);		
 		mqttClient.setAppli(tf);
 		tf.initSubscribe();

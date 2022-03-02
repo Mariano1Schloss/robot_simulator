@@ -13,6 +13,9 @@ import model.RobotDescriptor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class SmartTurtlebot extends Turtlebot{
 	protected Random rnd;
@@ -125,6 +128,15 @@ public class SmartTurtlebot extends Turtlebot{
 		this.x = x;
 		this.y = y;
 		grid.moveSituatedComponent(xo, yo, x, y);
+		if(debug==2){
+			try{
+				writer.write("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public Grid getGrid() {
@@ -137,6 +149,7 @@ public class SmartTurtlebot extends Turtlebot{
 
 	public void randomOrientation() {
 		double d = Math.random();
+		Orientation oldo = orientation;
 		if(d < 0.25) {
 			if(orientation != Orientation.up) 
 				orientation = Orientation.up;
@@ -160,6 +173,15 @@ public class SmartTurtlebot extends Turtlebot{
 				orientation = Orientation.right;
 			else 
 				orientation = Orientation.left;
+		}
+		if(debug==2){
+			try{
+				writer.write("Rotate from " + oldo + " to " + orientation); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
 		}
 	}
 
@@ -194,6 +216,7 @@ public class SmartTurtlebot extends Turtlebot{
 	}
 
 	public void moveLeft(int step) {
+		Orientation oldo = orientation;
 		for(int i = 0; i < step; i++){
 			if(orientation == Orientation.up) {
 				orientation = Orientation.left;
@@ -208,9 +231,19 @@ public class SmartTurtlebot extends Turtlebot{
 				orientation = Orientation.right;
 			}
 		}
+		if(debug==2){
+			try{
+				writer.write("Rotate from " + oldo + " to " + orientation); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public void moveRight(int step) {
+		Orientation oldo = orientation;
 		for(int i = 0; i < step; i++){
 			if(orientation == Orientation.up) {
 				orientation = Orientation.right;
@@ -225,6 +258,15 @@ public class SmartTurtlebot extends Turtlebot{
 				orientation = Orientation.left;
 			}
 		}	
+		if(debug==2){
+			try{
+				writer.write("Rotate from " + oldo + " to " + orientation); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public void moveForward() {
@@ -247,6 +289,15 @@ public class SmartTurtlebot extends Turtlebot{
 			x = Math.max(x,0);
 		}	
 		grid.moveSituatedComponent(xo,yo,x,y);
+		if(debug==2){
+			try{
+				writer.write("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 		JSONObject robotj = new JSONObject();
 		robotj.put("name", name);
 		robotj.put("id", ""+id);

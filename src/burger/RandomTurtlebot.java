@@ -13,6 +13,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RandomTurtlebot extends Turtlebot{
 	protected Random rnd;
@@ -110,8 +113,17 @@ public class RandomTurtlebot extends Turtlebot{
 	}
 
 	public void setLocation(int x, int y) {
+		int xo = this.x;
+		int yo = this.y;
 		this.x = x;
 		this.y = y;
+		if(debug==2){
+			try{
+				writer.append("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public List<Situated> getGrid() {
@@ -220,6 +232,7 @@ public class RandomTurtlebot extends Turtlebot{
 	}
 
 	public void moveLeft(int step) {
+		Orientation oldo = orientation;
 		for(int i = 0; i < step; i++){
 			if(orientation == Orientation.up) {
 				orientation = Orientation.left;
@@ -234,9 +247,17 @@ public class RandomTurtlebot extends Turtlebot{
 				orientation = Orientation.right;
 			}
 		}
+		if(debug==2){
+			try{
+				writer.append("Rotate from " + oldo + " to " + orientation); 
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public void moveRight(int step) {
+		Orientation oldo = orientation;
 		for(int i = 0; i < step; i++){
 			if(orientation == Orientation.up) {
 				orientation = Orientation.right;
@@ -251,6 +272,13 @@ public class RandomTurtlebot extends Turtlebot{
 				orientation = Orientation.left;
 			}
 		}	
+		if(debug==2){
+			try{
+				writer.append("Rotate from " + oldo + " to " + orientation); 
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 	}
 
 	public void moveForward() {
@@ -272,6 +300,13 @@ public class RandomTurtlebot extends Turtlebot{
 			x -= 1;
 			x = Math.max(x,0);
 		}	
+		if(debug==2){
+			try{
+				writer.append("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
 		JSONObject robotj = new JSONObject();
 		robotj.put("name", name);
 		robotj.put("id", ""+id);
