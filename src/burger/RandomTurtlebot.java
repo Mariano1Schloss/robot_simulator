@@ -116,14 +116,7 @@ public class RandomTurtlebot extends Turtlebot{
 		int xo = this.x;
 		int yo = this.y;
 		this.x = x;
-		this.y = y;
-		if(debug==2){
-			try{
-				writer.append("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
-			} catch(IOException ioe){
-				System.out.println(ioe);
-			}
-		}
+		this.y = y;		
 	}
 
 	public List<Situated> getGrid() {
@@ -162,7 +155,9 @@ public class RandomTurtlebot extends Turtlebot{
 		}
 	}
 
-	public void move(int step) {
+	public void move(int step) {	
+		String actionr = "move_forward";
+		String result = x + "," + y + "," + orientation + ",";
 		for(int i = 0; i < step; i++) {
 			EmptyCell[] ec = new EmptyCell[4];
 			ec[0] = null;
@@ -170,6 +165,7 @@ public class RandomTurtlebot extends Turtlebot{
         	ec[2] = null;
         	ec[3] = null;
 			//System.out.println("myRobot (" + columns + "," + rows + "): " + getX() + " " + getY());
+			String st = "[";
 			for(Situated s:grid){
 				//System.out.println("neighbour (" + s.getComponentType() + "): " + s.getX() + " " + s.getY());
 				if(getX() > 0 && s.getX() == getX()-1 && s.getY()==getY()) {
@@ -203,30 +199,78 @@ public class RandomTurtlebot extends Turtlebot{
 						ec[0] = null;		
 					}
 				}
+				st+= s.getX() + "," + s.getY() + ": " + s.display() + "; ";
 			}
+			st = st.substring(0, st.length() - 2);        
+			result += st + ",";
 			if(orientation == Orientation.up) {
 				if(ec[3] != null) 
 					moveForward();
-				else 
-					randomOrientation();
+				else {
+					//randomOrientation();
+					double d = Math.random();
+					if(d < 0.5) {
+						moveLeft(1);
+						actionr = "turn_left";
+					} else {
+						moveRight(1);
+						actionr = "turn_right";
+					}
+				}
 			}
 			else if(orientation == Orientation.down) {
 				if(ec[2] != null) 
 					moveForward();
-				else 
-					randomOrientation();
+				else {
+					//randomOrientation();
+					double d = Math.random();
+					if(d < 0.5) {
+						moveLeft(1);
+						actionr = "turn_left";
+					} else {
+						moveRight(1);
+						actionr = "turn_right";
+					}
+				}
 			}
 			else if(orientation == Orientation.right) {
 				if(ec[1] != null) 
 					moveForward();
-				else 
-					randomOrientation();
+				else {
+					//randomOrientation();
+					double d = Math.random();
+					if(d < 0.5) {
+						moveLeft(1);
+						actionr = "turn_left";
+					} else {
+						moveRight(1);
+						actionr = "turn_right";
+					}
+				}
 			}
 			else if(orientation == Orientation.left) {
 				if(ec[0] != null) 
 					moveForward();
-				else 
-					randomOrientation();
+				else {
+					//randomOrientation();
+					double d = Math.random();
+					if(d < 0.5) {
+						moveLeft(1);
+						actionr = "turn_left";
+					} else {
+						moveRight(1);
+						actionr = "turn_right";
+					}
+				}
+			}
+		}
+		if(debug==2){
+			try{
+				writer.write(result + actionr); 
+				writer.newLine();
+				writer.flush();
+			} catch(IOException ioe){
+				System.out.println(ioe);
 			}
 		}
 	}
@@ -247,13 +291,6 @@ public class RandomTurtlebot extends Turtlebot{
 				orientation = Orientation.right;
 			}
 		}
-		if(debug==2){
-			try{
-				writer.append("Rotate from " + oldo + " to " + orientation); 
-			} catch(IOException ioe){
-				System.out.println(ioe);
-			}
-		}
 	}
 
 	public void moveRight(int step) {
@@ -272,13 +309,6 @@ public class RandomTurtlebot extends Turtlebot{
 				orientation = Orientation.left;
 			}
 		}	
-		if(debug==2){
-			try{
-				writer.append("Rotate from " + oldo + " to " + orientation); 
-			} catch(IOException ioe){
-				System.out.println(ioe);
-			}
-		}
 	}
 
 	public void moveForward() {
@@ -300,13 +330,6 @@ public class RandomTurtlebot extends Turtlebot{
 			x -= 1;
 			x = Math.max(x,0);
 		}	
-		if(debug==2){
-			try{
-				writer.append("Move from (" +  xo + "," + yo +") to (" + x + "," + y +")"); 
-			} catch(IOException ioe){
-				System.out.println(ioe);
-			}
-		}
 		JSONObject robotj = new JSONObject();
 		robotj.put("name", name);
 		robotj.put("id", ""+id);
