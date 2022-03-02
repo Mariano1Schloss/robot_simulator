@@ -162,6 +162,30 @@ public class Grid {
     public Situated getCell(int r, int c) {
     	return grid[r][c];
     }
+
+    public String getCellsToString(int r, int c) {
+        String st = "[";
+        for(int i=0;i < 3;i++) {
+            for(int j=0;j < 3;j++) {
+                if((r-1+i)<0) {
+                    st += j + "," + i + ": null; ";
+                }
+                else if((r-1+i) >= rows) {
+                    st += j + "," + i + ": null; ";
+                } 
+                else if((c-1+j)<0) {
+                    st += j + "," + i + ": null; ";
+                }
+                else if((c-1+j) >= columns) {
+                    st += j + "," + i + ": null; ";
+                } else {
+                    st += j + "," + i + ": " + grid[(r-1+i)][(c-1+j)].display() + "; ";
+                }
+            }    
+        }
+        st = st.substring(0, st.length() - 2);
+        return st+"]";
+    }
     
     public boolean validCoordinate(int x, int y) {
     	return (x >= 0 && y >= 0 && x < columns && y < rows);
