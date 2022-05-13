@@ -26,7 +26,12 @@ public class Obstacle implements Situated{
 	public ComponentType getComponentType() 
 	{
 		return ComponentType.obstacle;
-	}	
+	}
+
+	@Override
+	public String getSubtype() {
+		return null;
+	}
 
 	public int getX() {
 		return x;

@@ -3,7 +3,8 @@ package model;
 import org.json.simple.JSONObject;
 
 public interface Situated {
-	public ComponentType getComponentType();	
+	public ComponentType getComponentType();
+	public String getSubtype(); // ++++
 	public int getX();
 	public int getY();
 	public void setX(int x);

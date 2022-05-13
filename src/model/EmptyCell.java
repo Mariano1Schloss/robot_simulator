@@ -15,7 +15,12 @@ public class EmptyCell implements Situated {
 	public 	ComponentType getComponentType() {
 		return ComponentType.empty;
 	}
-	
+
+	@Override
+	public String getSubtype() {
+		return null;
+	}
+
 	@Override
 	public int getX() {
 		return x;

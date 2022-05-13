@@ -23,8 +23,8 @@ public class RandomTurtlebot extends Turtlebot{
 	protected int rows;
 	protected int columns;
 
-	public RandomTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
-		super(id, name, seed, field, clientMqtt, debug);
+	public RandomTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug, String subtype) {
+		super(id, name, seed, field, clientMqtt, debug, subtype);
 		rnd = new Random(seed);
 		grid = new ArrayList<Situated>();	
 	}
@@ -50,8 +50,9 @@ public class RandomTurtlebot extends Turtlebot{
            		if(typeCell.equals("robot")) {
            			int idr = Integer.parseInt((String)jo.get("id"));
            			String namer = (String)jo.get("name");
+					String subtyper = (String)jo.get("subtype");
            			if(idr != id){
-	    	    		grid.add(new RobotDescriptor(to, idr, namer));
+	    	    		grid.add(new RobotDescriptor(to, idr, namer, subtyper));
 	    	    	}
         		} else if(typeCell.equals("obstacle")){
 					//System.out.println("Add ObstacleCell");
@@ -92,8 +93,9 @@ public class RandomTurtlebot extends Turtlebot{
            			int idr = Integer.parseInt((String)jo.get("id"));
            			boolean findr = false;
            			String namer = (String)jo.get("name");
+					String subtyper = (String)jo.get("subtype");
     	    		if(idr != id){
-	    	    		grid.add(new RobotDescriptor(to, idr, namer));
+	    	    		grid.add(new RobotDescriptor(to, idr, namer, subtyper));
 	    	    	}
         		} else if(typeCell.equals("obstacle")){
 					//System.out.println("Add ObstacleCell");

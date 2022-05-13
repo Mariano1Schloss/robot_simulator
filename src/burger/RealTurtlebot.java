@@ -24,8 +24,8 @@ public class RealTurtlebot extends Turtlebot{
 	public static String ip = "10.200.3.101"; //"10.3.143.1";
 	public static String port = "9090";
 
-	public RealTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
-		super(id, name, seed, field, clientMqtt, debug);
+	public RealTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug, String subtype) {
+		super(id, name, seed, field, clientMqtt, debug, subtype);
 		clientRosbridge = new RosbridgeClient(RealTurtlebot.ip, RealTurtlebot.port);
 	}
 
@@ -62,7 +62,8 @@ public class RealTurtlebot extends Turtlebot{
            			}
            			if(!findr) {
 	           			String namer = (String)jo.get("name");
-    	    			grid.forceSituatedComponent(new RobotDescriptor(to, idr, namer));
+						String subtyper = (String)jo.get("subtype");
+    	    			grid.forceSituatedComponent(new RobotDescriptor(to, idr, namer, subtyper));
     	    		}
         		} else {
         			Situated sg = grid.getCell(yo,xo);
@@ -114,7 +115,8 @@ public class RealTurtlebot extends Turtlebot{
         			//System.out.println("Add RobotCell");
         			int idr = Integer.parseInt((String)jo.get("id"));
         			String namer = (String)jo.get("name");
-        			s = new RobotDescriptor(to, idr, namer);
+					String subtyper = (String)jo.get("subtype");
+        			s = new RobotDescriptor(to, idr, namer, subtyper);
         		}
         		else {
         			//System.out.println("Add EmptyCell " + xo + ", " + yo);

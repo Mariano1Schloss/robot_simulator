@@ -22,6 +22,7 @@ import java.io.IOException;
 public abstract class Turtlebot implements Situated, SimulationComponent {	
 	protected Message clientMqtt;
 	protected String name;
+	protected String subtype;
 	protected int id;
 	protected int debug;
 	protected int x, y;
@@ -33,8 +34,9 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 	protected int field;
 	protected String sttime;
 	
-	protected Turtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
+	protected Turtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug, String subtype) {
 		this.name = name;
+		this.subtype = subtype; // ++++
 		this.debug = debug;
 		this.id = id;		
 		this.clientMqtt = clientMqtt;
@@ -139,6 +141,14 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 		this.name = name;
 	}
 
+	public String getSubtype() {
+		return subtype;
+	} //+++++
+
+	public void setSubtype(String subtype) {
+		this.subtype = subtype;
+	} // ++++
+
 	public boolean equals(Object o) {
 		if(o instanceof Turtlebot) {
 			return id == ((Turtlebot)o).getId();
@@ -154,6 +164,7 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 	public JSONObject toJSON() {
 		JSONObject jo = new JSONObject();
 		jo.put("type","turtlebot");
+		jo.put("subtype", subtype); //+++
 		jo.put("name",name);
 		jo.put("id",""+id);
 		jo.put("x",""+x);

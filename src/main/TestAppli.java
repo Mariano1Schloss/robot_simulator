@@ -28,6 +28,9 @@ public class TestAppli {
 	protected static int FIELD;
 	protected static int COLUMNS;
 	protected static Color COLORROBOT;
+	protected static Color COLORRENARD; // +++
+	protected static Color COLORPOULE; // +++
+	protected static Color COLORVIPERE; // +++
 	protected static Color COLORGOAL;
 	protected static Color COLOROBSTACLE;
 	protected static Color COLOROTHER;
@@ -53,6 +56,11 @@ public class TestAppli {
 			TestAppli.DISPLAYHEIGHT = ifile.getIntValue("display","height");
 			TestAppli.DISPLAYTITLE = ifile.getStringValue("display","title");
 			TestAppli.COLORROBOT = ifile.getColorValue("color","robot");
+
+			TestAppli.COLORRENARD = ifile.getColorValue("color","renard"); // +++
+			TestAppli.COLORPOULE = ifile.getColorValue("color","poule"); // +++
+			TestAppli.COLORVIPERE = ifile.getColorValue("color","vipere"); // +++
+
 			TestAppli.COLORGOAL = ifile.getColorValue("color","goal");
 			TestAppli.COLOROBSTACLE = ifile.getColorValue("color","obstacle");
 			TestAppli.COLOROTHER = ifile.getColorValue("color","other");
@@ -107,6 +115,14 @@ public class TestAppli {
 			mymes = new JSONObject();
 			mymes.put("color", Integer.toString(TestAppli.COLORROBOT.getRGB()));
 			mqttClient.publish("display/robot",mymes.toJSONString());
+
+			mymes.put("color", Integer.toString(TestAppli.COLORRENARD.getRGB()));
+			mqttClient.publish("display/robot",mymes.toJSONString());
+			mymes.put("color", Integer.toString(TestAppli.COLORPOULE.getRGB()));
+			mqttClient.publish("display/robot",mymes.toJSONString());
+			mymes.put("color", Integer.toString(TestAppli.COLORVIPERE.getRGB()));
+			mqttClient.publish("display/robot",mymes.toJSONString());
+
 			mymes = new JSONObject();
 			mymes.put("color", Integer.toString(TestAppli.COLORGOAL.getRGB()));
 			mqttClient.publish("display/goal",mymes.toJSONString());
