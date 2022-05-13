@@ -12,6 +12,11 @@ public class ObstacleDescriptor extends EntityDescriptor implements Situated{
 		return ComponentType.obstacle;
 	}
 
+	@Override
+	public String getSubtype() {
+		return null;
+	}
+
 	public String display(){
 		return "1";
 	}

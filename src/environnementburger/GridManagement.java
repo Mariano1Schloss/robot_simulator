@@ -16,6 +16,8 @@ import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -36,6 +38,11 @@ public class GridManagement implements SimulationComponent {
 	protected int displayheight;
 	protected String displaytitle;
 	protected Color colorrobot;
+
+	protected Color colorrenard; // ++++
+	protected Color colorpoule; // ++++
+	protected Color colorvipere; // ++++
+
 	protected Color colorobstacle;
 	protected Color colorgoal;
 	protected Color colorother;
@@ -76,7 +83,9 @@ public class GridManagement implements SimulationComponent {
 		cg = new ColorGrid(width,height,grid.getColumns(),grid.getRows(), title);
 		for(int i = 0; i < grid.getRows(); i++) {
 			for(int j = 0; j < grid.getColumns(); j++) {
+
 				Situated elt = grid.getCell(i, j);
+				System.out.println("This is the component type at the color grid : " + elt.getComponentType());
 				if(elt.getComponentType() == ComponentType.empty) {					
 					if(isGoal(j,i) < 0) {
 						cg.setBlockColor(j,i,colorgoal);
@@ -84,8 +93,20 @@ public class GridManagement implements SimulationComponent {
 						cg.setBlockColor(j,i,colorother);
 					}
 				}
-				else if(elt.getComponentType() == ComponentType.robot)
-					cg.setBlockColor(j,i,colorrobot);
+				else if(elt.getComponentType() == ComponentType.robot) {
+					// debug
+					//System.out.println("Robot : " + elt.toString());
+					System.out.println("This is the subtype at the color grid : " + elt.getSubtype() );
+					if (elt.getSubtype().equalsIgnoreCase("renard")) { // +++++
+						cg.setBlockColor(j, i, colorrenard);
+					}
+					else if (elt.getSubtype().equalsIgnoreCase("poule")) { // +++++
+						cg.setBlockColor(j, i, colorpoule);
+					}
+					else if (elt.getSubtype().equalsIgnoreCase("vipere")) { // +++++
+						cg.setBlockColor(j, i, colorvipere);
+					}
+				}
 				else if(elt.getComponentType() == ComponentType.obstacle)
 					cg.setBlockColor(j,i,colorobstacle);
 				else
@@ -155,7 +176,18 @@ public class GridManagement implements SimulationComponent {
 				grid.moveSituatedComponent(x1,y1,x2,y2);
 				if(display == 1) { 
 					cg.setBlockColor(x1,y1,colorother);
-					cg.setBlockColor(x2,y2,colorrobot);
+					// debug
+					// cg.setBlockColor(x2, y2, colorrobot);
+					System.out.println("This is the subtype in moverobot : " + elt.getSubtype());
+					if (elt.getSubtype().equalsIgnoreCase("renard")) { // +++++
+						cg.setBlockColor(x2, y2, colorrenard);
+					}
+					else if (elt.getSubtype().equalsIgnoreCase("poule")) { // +++++
+						cg.setBlockColor(x2, y2, colorpoule);
+					}
+					else if (elt.getSubtype().equalsIgnoreCase("vipere")) { // +++++
+						cg.setBlockColor(x2, y2, colorvipere);
+					}
 				}
 				return true;
 			}
@@ -217,6 +249,7 @@ public class GridManagement implements SimulationComponent {
 			RobotDescriptor rb = (RobotDescriptor)s;
 			JSONObject jo = new JSONObject();
 			jo.put("name", rb.getName());
+			jo.put("subtype", rb.getSubtype()); // ++++
 			jo.put("id", rb.getId()+"");
 			jo.put("x", rb.getX()+"");
 			jo.put("y", rb.getY()+"");
@@ -229,6 +262,7 @@ public class GridManagement implements SimulationComponent {
 		if (topic.contains("robot/nextPosition")) {
 			//System.out.println("UPDATE ROBOT");
 			String rn = (String)content.get("name");
+			String st = (String)content.get("subtype"); // +++++
 			int idr = Integer.parseInt((String)content.get("id"));
 			int xr = Integer.parseInt((String)content.get("x"));
 			int yr = Integer.parseInt((String)content.get("y"));
@@ -243,7 +277,17 @@ public class GridManagement implements SimulationComponent {
 				} else {
 					cg.setBlockColor(xor,yor,colorother);
 				}
-				cg.setBlockColor(xr, yr, colorrobot);
+				if (st.equalsIgnoreCase("renard")) { // +++++
+					cg.setBlockColor(xr, yr, colorrenard);
+				}
+				else if (st.equalsIgnoreCase("poule")) { // +++++
+					cg.setBlockColor(xr, yr, colorpoule);
+				}
+				else if (st.equalsIgnoreCase("vipere")) { // +++++
+					cg.setBlockColor(xr, yr, colorvipere);
+				}
+				// debug
+				// cg.setBlockColor(xr, yr, colorrobot);
 				cg.refresh();
 			}
 			if(debug == 1) {
@@ -251,11 +295,23 @@ public class GridManagement implements SimulationComponent {
 			}
 		}else if (topic.contains("configuration/nbRobot")) {
            	nbRobots = Integer.parseInt((String)content.get("nbRobot"));
+			String st = (String)content.get("subtype"); // ++++
+			System.out.println("This is the subtype : " + st );
            	for(int i = 2; i < nbRobots+2; i++) {
            		int[] pos = grid.locate();           	
-				grid.putSituatedComponent(new RobotDescriptor(pos, i, GridManagement.turtlebotName+i));
+				grid.putSituatedComponent(new RobotDescriptor(pos, i, GridManagement.turtlebotName+i, st));
 				if(display == 1) {
-					cg.setBlockColor(pos[0], pos[1], colorrobot);
+					if (st == "renard") { // +++++
+						cg.setBlockColor(pos[0], pos[1], colorrenard);
+					}
+					else if (st == "poule") { // +++++
+						cg.setBlockColor(pos[0], pos[1], colorpoule);
+					}
+					else if (st == "vipere") { // +++++
+						cg.setBlockColor(pos[0], pos[1], colorvipere);
+					}
+					// debug
+					cg.setBlockColor(pos[0], pos[1], Color.ORANGE);
 					cg.refresh();
 				}				
 			}
@@ -274,6 +330,7 @@ public class GridManagement implements SimulationComponent {
         }        
         else if (topic.contains("configuration/robot/grid")) {
             String nameR = (String)content.get("name");
+			String subtypeR = (String)content.get("subtype"); // +++++
             int fieldr = Integer.parseInt((String)content.get("field"));
             int xr = Integer.parseInt((String)content.get("x"));
             int yr = Integer.parseInt((String)content.get("y"));
@@ -282,6 +339,7 @@ public class GridManagement implements SimulationComponent {
         }
         else if (topic.contains("robot/grid")) {
             String nameR = (String)content.get("name");
+			String subtypeR = (String)content.get("subtype"); // +++++
             int fieldr = Integer.parseInt((String)content.get("field"));
             int xr = Integer.parseInt((String)content.get("x"));
             int yr = Integer.parseInt((String)content.get("y"));
@@ -330,6 +388,7 @@ public class GridManagement implements SimulationComponent {
 				refresh();
         } */       
         else if(display == 1) {
+			String subtypeR = (String)content.get("subtype"); // +++++
 			if (topic.contains("display/width")) {
     	        displaywidth = Integer.parseInt((String)content.get("displaywidth"));
         	}
@@ -340,8 +399,13 @@ public class GridManagement implements SimulationComponent {
             	displaytitle = (String)content.get("displaytitle");
         	}
         	else if (topic.contains("display/robot")) {
-            	colorrobot = new Color(Integer.parseInt((String)content.get("color")));
-        	}
+				// debug
+				colorrobot = new Color(Integer.parseInt((String) content.get("color")));
+				colorrenard = Color.ORANGE;
+				colorpoule = Color.WHITE;
+				colorvipere = Color.GREEN;
+			}
+
         	else if (topic.contains("display/goal")) {
             	colorgoal = new Color(Integer.parseInt((String)content.get("color")));
         	}

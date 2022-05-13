@@ -21,8 +21,8 @@ public class SmartTurtlebot extends Turtlebot{
 	protected Random rnd;
 	protected Grid grid;
 
-	public SmartTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
-		super(id, name, seed, field, clientMqtt, debug);
+	public SmartTurtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug, String subtype) {
+		super(id, name, seed, field, clientMqtt, debug, subtype);
 		rnd = new Random(seed);	
 	}
 
@@ -59,7 +59,8 @@ public class SmartTurtlebot extends Turtlebot{
            			}
            			if(!findr) {
 	           			String namer = (String)jo.get("name");
-    	    			grid.forceSituatedComponent(new RobotDescriptor(to, idr, namer));
+						String subtyper = (String)jo.get("subtype"); // ++++
+    	    			grid.forceSituatedComponent(new RobotDescriptor(to, idr, namer, subtyper));
     	    		}
         		} else {
         			Situated sg = grid.getCell(yo,xo);
@@ -111,7 +112,8 @@ public class SmartTurtlebot extends Turtlebot{
         			//System.out.println("Add RobotCell");
         			int idr = Integer.parseInt((String)jo.get("id"));
         			String namer = (String)jo.get("name");
-        			s = new RobotDescriptor(to, idr, namer);
+					String subtyper = (String)jo.get("subtype"); // ++++
+        			s = new RobotDescriptor(to, idr, namer, subtyper);
         		}
         		else {
         			//System.out.println("Add EmptyCell " + xo + ", " + yo);
@@ -129,6 +131,8 @@ public class SmartTurtlebot extends Turtlebot{
 		this.y = y;
 		grid.moveSituatedComponent(xo, yo, x, y);
 	}
+
+
 
 	public Grid getGrid() {
 		return grid;
@@ -306,6 +310,7 @@ public class SmartTurtlebot extends Turtlebot{
 		grid.moveSituatedComponent(xo,yo,x,y);
 		JSONObject robotj = new JSONObject();
 		robotj.put("name", name);
+		robotj.put("subtype", subtype); // +++++
 		robotj.put("id", ""+id);
 		robotj.put("x", ""+x);
 		robotj.put("y", ""+y);

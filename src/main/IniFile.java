@@ -53,6 +53,21 @@ public class IniFile {
       case "gray":
         mycolor = Color.GRAY;
         break;
+      case "orange":
+        mycolor = Color.ORANGE;
+        break;
+      case "black":
+        mycolor = Color.BLACK;
+        break;
+      case "renard":
+        mycolor = Color.ORANGE;
+        break;
+      case "poule":
+        mycolor = Color.WHITE;
+        break;
+      case "vipere":
+        mycolor = Color.GREEN;
+        break;
       default:
           mycolor = Color.WHITE;
     }
