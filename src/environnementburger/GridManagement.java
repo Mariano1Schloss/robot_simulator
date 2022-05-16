@@ -92,12 +92,14 @@ public class GridManagement implements SimulationComponent {
 //ICI
 				/*else if(elt.getComponentType() == ComponentType.robot)
 					cg.setBlockColor(j,i,colorrobot);*/
-				else if(elt.getTeam().equals("poule"))
-					cg.setBlockColor(j,i,colorpoule);
-				else if(elt.getTeam().equals("vipere"))
-					cg.setBlockColor(j,i,colorvipere);
-				else if(elt.getTeam().equals("renard"))
-					cg.setBlockColor(j,i,colorrenard);
+				else if (elt.getComponentType() == ComponentType.robot) {
+				 	if (elt.getTeam().equals("poule"))
+						cg.setBlockColor(j, i, colorpoule);
+					 else if (elt.getTeam().equals("vipere") )
+						cg.setBlockColor(j, i, colorvipere);
+				 	else if (elt.getTeam().equals("renard"))
+						cg.setBlockColor(j, i, colorrenard);
+				}
 
 				else if(elt.getComponentType() == ComponentType.obstacle)
 					cg.setBlockColor(j,i,colorobstacle);
