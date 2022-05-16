@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 /* This class handles the connection with the Rosbridge websocket server */
 public class RosbridgeClient {
     private WebSocketClient wsc;
-    
+
 
     public WebSocketClient getWsc () {
         return wsc;
@@ -17,7 +17,7 @@ public class RosbridgeClient {
     public void setWsc (WebSocketClient wsc) {
         this.wsc = wsc;
     }
-    
+
     /* Connection to the webSocket */
     public RosbridgeClient(String host, String port) {
         try {
@@ -52,9 +52,9 @@ public class RosbridgeClient {
         }
     }
 
-	public void close() {
-		wsc.close();
-	}
+    public void close() {
+        wsc.close();
+    }
 
 
 }

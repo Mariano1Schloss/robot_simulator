@@ -36,6 +36,10 @@ public class GridManagement implements SimulationComponent {
 	protected int displayheight;
 	protected String displaytitle;
 	protected Color colorrobot;
+	protected Color colorvipere;
+	protected Color colorpoule;
+	protected Color colorrenard;
+
 	protected Color colorobstacle;
 	protected Color colorgoal;
 	protected Color colorother;
@@ -79,13 +83,22 @@ public class GridManagement implements SimulationComponent {
 				Situated elt = grid.getCell(i, j);
 				if(elt.getComponentType() == ComponentType.empty) {					
 					if(isGoal(j,i) < 0) {
-						cg.setBlockColor(j,i,colorgoal);
+						//cg.setBlockColor(j,i,colorgoal);
+						cg.setBlockColor(j,i,colorother);
 					} else {
 						cg.setBlockColor(j,i,colorother);
 					}
 				}
-				else if(elt.getComponentType() == ComponentType.robot)
-					cg.setBlockColor(j,i,colorrobot);
+//ICI
+				/*else if(elt.getComponentType() == ComponentType.robot)
+					cg.setBlockColor(j,i,colorrobot);*/
+				else if(elt.getTeam().equals("poule"))
+					cg.setBlockColor(j,i,colorpoule);
+				else if(elt.getTeam().equals("vipere"))
+					cg.setBlockColor(j,i,colorvipere);
+				else if(elt.getTeam().equals("renard"))
+					cg.setBlockColor(j,i,colorrenard);
+
 				else if(elt.getComponentType() == ComponentType.obstacle)
 					cg.setBlockColor(j,i,colorobstacle);
 				else
@@ -153,9 +166,14 @@ public class GridManagement implements SimulationComponent {
 			RobotDescriptor eltR = (RobotDescriptor)elt;
 			if(eltR.getId() == id) {
 				grid.moveSituatedComponent(x1,y1,x2,y2);
+//ICI
 				if(display == 1) { 
 					cg.setBlockColor(x1,y1,colorother);
-					cg.setBlockColor(x2,y2,colorrobot);
+					//cg.setBlockColor(x2,y2,colorrobot);
+					if (eltR.getTeam().equals("poule"))cg.setBlockColor(x2,y2,colorpoule);
+					else if (eltR.getTeam().equals("vipere"))cg.setBlockColor(x2,y2,colorvipere);
+					else if (eltR.getTeam().equals("renard"))cg.setBlockColor(x2,y2,colorrenard);
+
 				}
 				return true;
 			}
@@ -194,7 +212,9 @@ public class GridManagement implements SimulationComponent {
 					if(s.getComponentType() == ComponentType.robot) {
 						RobotDescriptor rd = (RobotDescriptor)s;
 						jo.put("name", rd.getName());	
-						jo.put("id", rd.getId()+"");	
+						jo.put("id", rd.getId()+"");
+						jo.put("team", rd.getTeam());
+
 					}
 					jo.put("x", s.getX()+"");
 					jo.put("y", s.getY()+"");
@@ -220,6 +240,8 @@ public class GridManagement implements SimulationComponent {
 			jo.put("id", rb.getId()+"");
 			jo.put("x", rb.getX()+"");
 			jo.put("y", rb.getY()+"");
+			jo.put("team", rb.getTeam());
+
 			clientMqtt.publish(rb.getName()+"/position/init", jo.toJSONString());
 		}
 	}
@@ -239,23 +261,48 @@ public class GridManagement implements SimulationComponent {
 			if(display == 1) {
 				//cg.setBlockColor(xor, yor, colorother);				
 				if(isGoal(xor,yor)<0) {
-					cg.setBlockColor(xor,yor,colorgoal);
+					//cg.setBlockColor(xor,yor,colorgoal);
+					cg.setBlockColor(xor,yor,colorother);
 				} else {
 					cg.setBlockColor(xor,yor,colorother);
 				}
-				cg.setBlockColor(xr, yr, colorrobot);
+//ICI
+				System.out.println("team of robot or next position : "+(String)content.get("team"));
+				if (((String)content.get("team")).equals("poule"))cg.setBlockColor(xr,yr,colorpoule);
+				else if (((String)content.get("team")).equals("vipere"))cg.setBlockColor(xr,yr,colorvipere);
+				else if (((String)content.get("team")).equals("renard"))cg.setBlockColor(xr,yr,colorrenard);
+				else cg.setBlockColor(xr, yr, colorrobot);
+
 				cg.refresh();
 			}
 			if(debug == 1) {
 				grid.display();
 			}
 		}else if (topic.contains("configuration/nbRobot")) {
+			//création des ROBOTS DESCRIPTORS
            	nbRobots = Integer.parseInt((String)content.get("nbRobot"));
-           	for(int i = 2; i < nbRobots+2; i++) {
-           		int[] pos = grid.locate();           	
-				grid.putSituatedComponent(new RobotDescriptor(pos, i, GridManagement.turtlebotName+i));
+			   System.out.println("le nombre de robots : "+nbRobots);
+			int id=2;
+           	for(int i = 2; i < nbRobots/3+2; i++) {
+           		int[] posVipere = grid.locate();
+				int[] posPoule = grid.locate();
+				int[] posRenard = grid.locate();
+				//int[] posRobot = grid.locate();
+
+
+				grid.putSituatedComponent(new RobotDescriptor(posVipere, id, GridManagement.turtlebotName+id,"vipere"));
+				id++;
+				grid.putSituatedComponent(new RobotDescriptor(posPoule, id, GridManagement.turtlebotName+id,"poule"));
+				id++;
+				grid.putSituatedComponent(new RobotDescriptor(posRenard, id, GridManagement.turtlebotName+id,"renard"));
+				id++;
+
+
 				if(display == 1) {
-					cg.setBlockColor(pos[0], pos[1], colorrobot);
+//ICI
+					cg.setBlockColor(posPoule[0], posPoule[1],colorpoule);
+					cg.setBlockColor(posVipere[0], posVipere[1],colorvipere);
+					cg.setBlockColor(posRenard[0], posRenard[1],colorrenard);
 					cg.refresh();
 				}				
 			}
@@ -264,7 +311,9 @@ public class GridManagement implements SimulationComponent {
 				// ec = (EmptyCell)grid.getCell(pos[1], pos[0]);
 				goals.add(new Goal(pos[0],pos[1],-1*i));
 				if(display == 1) {
-					cg.setBlockColor(pos[0], pos[1], colorgoal);
+					//cg.setBlockColor(pos[0], pos[1], colorgoal);
+					cg.setBlockColor(pos[0], pos[1], colorother);
+
 					cg.refresh();
 				}	
 			}
@@ -282,11 +331,13 @@ public class GridManagement implements SimulationComponent {
         }
         else if (topic.contains("robot/grid")) {
             String nameR = (String)content.get("name");
-            int fieldr = Integer.parseInt((String)content.get("field"));
+			String teamR = (String)content.get("team");
+
+			int fieldr = Integer.parseInt((String)content.get("field"));
             int xr = Integer.parseInt((String)content.get("x"));
             int yr = Integer.parseInt((String)content.get("y"));
             JSONObject jo = gridToJSONObject(xr, yr, fieldr);
-            clientMqtt.publish(nameR+"/grid/update", jo.toJSONString());
+            clientMqtt.publish(nameR+teamR+"/grid/update", jo.toJSONString());
         }
 		else if (topic.contains("robot/nextPosition")) {
             publishState(content);
@@ -301,6 +352,10 @@ public class GridManagement implements SimulationComponent {
 				clientMqtt.subscribe("display/height");
 				clientMqtt.subscribe("display/title");
 				clientMqtt.subscribe("display/robot");
+				clientMqtt.subscribe("display/renard");
+				clientMqtt.subscribe("display/vipere");
+				clientMqtt.subscribe("display/poule");
+
 				clientMqtt.subscribe("display/goal");
 				clientMqtt.subscribe("display/obstacle");
 				clientMqtt.subscribe("display/other");
@@ -339,9 +394,19 @@ public class GridManagement implements SimulationComponent {
 			else if (topic.contains("display/title")) {
             	displaytitle = (String)content.get("displaytitle");
         	}
+//ICI
         	else if (topic.contains("display/robot")) {
             	colorrobot = new Color(Integer.parseInt((String)content.get("color")));
         	}
+			else if (topic.contains("display/poule")) {
+				colorpoule = new Color(Integer.parseInt((String)content.get("color")));
+			}
+			else if (topic.contains("display/vipere")) {
+				colorvipere = new Color(Integer.parseInt((String)content.get("color")));
+			}
+			else if (topic.contains("display/renard")) {
+				colorrenard = new Color(Integer.parseInt((String)content.get("color")));
+			}
         	else if (topic.contains("display/goal")) {
             	colorgoal = new Color(Integer.parseInt((String)content.get("color")));
         	}

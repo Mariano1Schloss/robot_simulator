@@ -1,18 +1,33 @@
 package model;
 
 import org.json.simple.JSONObject;
+
+import java.awt.*;
 import java.util.Map;
 import java.util.HashMap;
 
 public class RobotDescriptor extends EntityDescriptor implements Situated{
 	
-	protected Map<String,String> properties;	
+	protected Map<String,String> properties;
+	protected String color;
+	protected String team;
 	
-	public RobotDescriptor (int [] location, int id, String name) {
+	public RobotDescriptor (int [] location, int id, String name,String team) {
 		super(location);
+		this.team=team;
 		properties = new HashMap<String, String>();
 		properties.put("id",id+"");
 		properties.put("name",name);
+		properties.put("color", color);
+		properties.put("team", team);
+
+		//add color attribute
+
+	}
+
+
+	public String getTeam() {
+		return properties.get("team");
 	}
 
 	public ComponentType getComponentType(){
@@ -51,6 +66,8 @@ public class RobotDescriptor extends EntityDescriptor implements Situated{
 		jo.put("id",getId()+"");
 		jo.put("x",""+x);
 		jo.put("y",""+y);
+		jo.put("team",""+team);
+
 		return jo;
 	}
 }

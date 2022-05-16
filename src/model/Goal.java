@@ -30,7 +30,12 @@ public class Goal implements Situated {
 	public 	ComponentType getComponentType() {
 		return ComponentType.goal;
 	}
-	
+
+	@Override
+	public String getTeam() {
+		return null;
+	}
+
 	@Override
 	public int getX() {
 		return x;

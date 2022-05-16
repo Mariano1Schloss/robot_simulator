@@ -23,7 +23,12 @@ public class UnknownCell implements Situated {
 	public 	ComponentType getComponentType() {
 		return ComponentType.unknown;
 	}
-	
+
+	@Override
+	public String getTeam() {
+		return null;
+	}
+
 	public int getX() {
 		return x;
 	}

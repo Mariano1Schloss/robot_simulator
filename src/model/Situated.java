@@ -3,7 +3,9 @@ package model;
 import org.json.simple.JSONObject;
 
 public interface Situated {
-	public ComponentType getComponentType();	
+	//get color  & setter
+	public ComponentType getComponentType();
+	public String getTeam();
 	public int getX();
 	public int getY();
 	public void setX(int x);

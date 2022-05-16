@@ -28,6 +28,10 @@ public class TestAppli {
 	protected static int FIELD;
 	protected static int COLUMNS;
 	protected static Color COLORROBOT;
+	protected static Color COLORVIPERE;
+	protected static Color COLORPOULE;
+	protected static Color COLORRENARD;
+
 	protected static Color COLORGOAL;
 	protected static Color COLOROBSTACLE;
 	protected static Color COLOROTHER;
@@ -52,7 +56,13 @@ public class TestAppli {
 			TestAppli.DISPLAYWIDTH =  ifile.getIntValue("display","width");
 			TestAppli.DISPLAYHEIGHT = ifile.getIntValue("display","height");
 			TestAppli.DISPLAYTITLE = ifile.getStringValue("display","title");
+			//ADD NEW TEAMS
 			TestAppli.COLORROBOT = ifile.getColorValue("color","robot");
+			TestAppli.COLORVIPERE = ifile.getColorValue("color","vipere");
+			TestAppli.COLORPOULE = ifile.getColorValue("color","poule");
+			TestAppli.COLORRENARD = ifile.getColorValue("color","renard");
+
+
 			TestAppli.COLORGOAL = ifile.getColorValue("color","goal");
 			TestAppli.COLOROBSTACLE = ifile.getColorValue("color","obstacle");
 			TestAppli.COLOROTHER = ifile.getColorValue("color","other");
@@ -105,8 +115,23 @@ public class TestAppli {
 			mymes.put("displaytitle", TestAppli.DISPLAYTITLE);
 			mqttClient.publish("display/title",mymes.toJSONString());
 			mymes = new JSONObject();
+			//ADD THE OTHERS ONES. modify le contenu du message
 			mymes.put("color", Integer.toString(TestAppli.COLORROBOT.getRGB()));
 			mqttClient.publish("display/robot",mymes.toJSONString());
+			//VIPERE
+			mymes = new JSONObject();
+			mymes.put("color", Integer.toString(TestAppli.COLORVIPERE.getRGB()));
+			mqttClient.publish("display/vipere",mymes.toJSONString());
+			//POULE
+			mymes = new JSONObject();
+			mymes.put("color", Integer.toString(TestAppli.COLORPOULE.getRGB()));
+			mqttClient.publish("display/poule",mymes.toJSONString());
+			//RENARD
+			mymes = new JSONObject();
+			mymes.put("color", Integer.toString(TestAppli.COLORRENARD.getRGB()));
+			mqttClient.publish("display/renard",mymes.toJSONString());
+
+			System.out.println("Color vipere : "+COLORVIPERE+ "  Color poule : "+COLORPOULE+"  Color renard : "+COLORRENARD+"  Color robot : "+COLORROBOT);
 			mymes = new JSONObject();
 			mymes.put("color", Integer.toString(TestAppli.COLORGOAL.getRGB()));
 			mqttClient.publish("display/goal",mymes.toJSONString());

@@ -1,5 +1,6 @@
 package components;
 
+import burger.Team;
 import model.ComponentType;
 import model.Situated;
 import burger.Orientation;
@@ -32,8 +33,9 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 	protected BufferedWriter writer;
 	protected int field;
 	protected String sttime;
-	
-	protected Turtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug) {
+	public String  team;
+
+	protected Turtlebot(int id, String name, int seed, int field, Message clientMqtt, int debug, String team) {
 		this.name = name;
 		this.debug = debug;
 		this.id = id;		
@@ -42,6 +44,7 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 		goalReached = false;
 		this.seed = seed;
 		this.field = field;
+		this.team=team;
 	}
 
 	public void setLog(String st) {
@@ -74,7 +77,11 @@ public abstract class Turtlebot implements Situated, SimulationComponent {
 				System.out.println(ioe);
 			}
 		}
-	}	
+	}
+
+	public String getTeam() {
+		return team;
+	}
 
 	protected abstract void init() ;
 

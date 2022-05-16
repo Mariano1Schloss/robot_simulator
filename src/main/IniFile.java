@@ -41,6 +41,12 @@ public class IniFile {
       case "blue":
         mycolor = Color.BLUE;
         break;
+      case "white":
+        mycolor = Color.WHITE;
+        break;
+      case "orange":
+        mycolor = Color.ORANGE;
+        break;
       case "green":          
         mycolor = Color.GREEN;
         break;

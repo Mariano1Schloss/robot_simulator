@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 /* This model class defines the grid components */
+
+//actual grid, add new teams
 public class Grid {
     private Situated[][] grid;    
     protected final int rows;
@@ -208,7 +210,7 @@ public class Grid {
 		}
 		return false;
 	}
-	
+	//one for each of the teams
 	public boolean putSituatedComponent(Situated sc) {		
 		if (validCoordinate(sc.getX(), sc.getY()) && grid[sc.getY()][sc.getX()].getComponentType() == ComponentType.empty) {
 			grid[sc.getY()][sc.getX()] = sc;
