@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="print different teams">
-      <change beforePath="$PROJECT_DIR$/prop.ini" beforeDir="false" afterPath="$PROJECT_DIR$/prop.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" afterDir="false" />
-    </list>
+    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="print different teams" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
