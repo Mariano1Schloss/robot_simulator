@@ -25,9 +25,13 @@ public class RobotDescriptor extends EntityDescriptor implements Situated{
 
 	}
 
+	public void setTeam(String team) {
+		this.team = team;
+		properties.replace("team",team);
+	}
 
 	public String getTeam() {
-		return properties.get("team");
+		return team;
 	}
 
 	public ComponentType getComponentType(){
@@ -55,7 +59,7 @@ public class RobotDescriptor extends EntityDescriptor implements Situated{
 	}
 
 	public String toString() {
-		return "{type: " + getComponentType() + ", name: " + getName()+ ", id: " + getId() + ", x: " + x  + ", y: " + y + "}"; 
+		return "{type: " + getComponentType() + ", name: " + getName()+", team: " + getTeam()+ ", id: " + getId() + ", x: " + x  + ", y: " + y + "}";
 	}
 
 	@SuppressWarnings("unchecked")

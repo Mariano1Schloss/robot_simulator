@@ -80,12 +80,27 @@ public class TurtlebotFactory implements SimulationComponent {
 			for(Turtlebot t: mesRobots.values()) {
 				updateGrid(t);
 				moveRobot(t);
+				HunterTurtleBot2 rb = (HunterTurtleBot2) t;
+				//System.out.println("Robot : "+rb);
+				//System.out.println("RobotKilledID : "+rb.getKilledRobotId());
+				//System.out.println("test "+mesRobots.get(rb.getKilledRobotId()) );
+				//bloc suivant à utiliser si on veut faire mourir les robots
+				/*if (rb.getKilledRobotId()!=0){
+					if (mesRobots.get("burger_"+rb.getKilledRobotId())!=null){
+							mesRobots.remove("burger_"+rb.getKilledRobotId());
+							System.out.println("Robot "+rb.getProie()+rb.getKilledRobotId()+"has been killed by"+rb.getTeam()+rb.getId());
+							System.out.println("my_robots now : "+mesRobots);
+							break;
+					}
+					((HunterTurtleBot2) t).setKilledRobotId(0);
+				}*/
 			}
 			try {
 				Thread.sleep(waittime);
 			}catch(InterruptedException ie){
 				System.out.println(ie);
 			}
+
 		}
 		for(Turtlebot t: mesRobots.values()) {
 			t.setGoalReached(true);
@@ -100,6 +115,9 @@ public class TurtlebotFactory implements SimulationComponent {
        	jo.put("x",t.getX()+"");
        	jo.put("y",t.getY()+"");
 		jo.put("team", t.getTeam());
+		jo.put("id", t.getId()+"");
+
+		System.out.println("FROM FACTORY : robot"+t.getId()+" team : "+t.getTeam());
 
 		clientMqtt.publish("robot/grid", jo.toJSONString());
 	}

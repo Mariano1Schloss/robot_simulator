@@ -259,4 +259,17 @@ public class Grid {
         }
         return result;
     }
+
+    public RobotDescriptor getById(int id){
+        for(int i=0; i < rows; i++) {
+            for(int j=0; j < columns; j++) {
+                Situated elt = grid[i][j];
+                if(elt.getComponentType() == ComponentType.robot){
+                    RobotDescriptor rb= (RobotDescriptor) elt;
+                    if (rb.getId()==id) return rb;
+                }
+            }
+        }
+        return null;
+    }
 }
