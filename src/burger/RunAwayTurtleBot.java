@@ -16,33 +16,48 @@ import java.util.List;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-public class HunterTurtleBot2 extends Turtlebot {
+/*This class implements  another strategy for the robots
+    Where HunterTurtleRobots go to their closest predatory , these robots try to run away from their predatories
+    Very few differences with HunterTurtlesBots except that :
+        -the RunAwayTurtleBots have a pradatory attribute
+        -The GetClosest() function returns the closest predatory
+        -the setNewOrientation() function sets the orientation that allows the robot to run away from the robot
+ */
+public class RunAwayTurtleBot extends Turtlebot {
     protected Random rnd;
     protected Grid grid;
-    protected String proie;//variable that describes the team that the robot is hunting
+    protected String predatory;//variable that describes the team that the robot is running away from
+    protected  String proie ;//variable that describes the team that the robot is hunting
+
     //Variable used only if we want the captured robot to be removed (see  getClosest below,schedule function in Turtlbotfactory and killed/robot topic in GridManagement)
     protected int killedRobotId;
 
-    public HunterTurtleBot2(int id, String name, int seed, int field, Message clientMqtt, int debug, String team) {
+    public RunAwayTurtleBot(int id, String name, int seed, int field, Message clientMqtt, int debug, String team) {
         super(id, name, seed, field, clientMqtt, debug,team);
         killedRobotId=0;
+        //We define the predatory variable regarding the Robot team
+        if (team.equals("vipere")) predatory="poule";
+        else if (team.equals("renard"))predatory="vipere";
+        else if (team.equals("poule"))predatory="renard";
         //We define the proie variable regarding the Robot team
         if (team.equals("vipere")) proie="renard";
         else if (team.equals("renard"))proie="poule";
         else if (team.equals("poule"))proie="vipere";
     }
     //Getters and setters
+
+
     public String getProie() {return proie;}
 
     public void setProie(String proie) {this.proie = proie;}
 
-    public int getKilledRobotId() {
-        return killedRobotId;
-    }
+    public String getPredatory() {return predatory;}
 
-    public void setKilledRobotId(int killedRobotId) {
-        this.killedRobotId = killedRobotId;
-    }
+    public void setPredatory(String predatory) {this.predatory = predatory;}
+
+    public int getKilledRobotId() {return killedRobotId;}
+
+    public void setKilledRobotId(int killedRobotId) {this.killedRobotId = killedRobotId;}
 
     //Subscribe to the topics we are interested in
     protected void init() {
@@ -79,7 +94,7 @@ public class HunterTurtleBot2 extends Turtlebot {
                         System.out.println("grid Rs from id : "+id+" "+ sss.toString());
                         /*Je sépare les cas où sss=this ou non car dans un cas sss est de type Turtlebot, dans les autres RobotDescriptor*/
                         if (sss.equals(this) ){
-                            HunterTurtleBot2 rd = (HunterTurtleBot2)sss;
+                            RunAwayTurtleBot rd = (RunAwayTurtleBot)sss;
                             if(rd.getId() == idr) {
                                 grid.moveSituatedComponent(rd.getX(), rd.getY(), xo, yo);
                                 findr = true;
@@ -135,13 +150,13 @@ public class HunterTurtleBot2 extends Turtlebot {
             String oldTeam= (String) content.get("team");
             if (oldTeam.equals("vipere")){
                 this.team="poule";
-                this.proie="vipere";
+                this.predatory="vipere";
             }else if (oldTeam.equals("poule")){
                 this.team="renard";
-                this.proie="poule";
+                this.predatory="poule";
             }else if (oldTeam.equals("renard")){
                 this.team="vipere";
-                this.proie="renard";
+                this.predatory="renard";
             }
             //Then we publish another topic that will be received by GridManagement to update the actual Grid
             String newTeam=team;
@@ -202,58 +217,49 @@ public class HunterTurtleBot2 extends Turtlebot {
     public Situated getClosest() {
         double distance = Math.pow(10, 30);
         Situated official = null;
-       /* if (id==2){
-            System.out.println("-----------------------");
-            System.out.println("grille vue due robot id"+id+" : ");
-            grid.display();
-            System.out.println("-----------------------");
-        }*/
         //We put the Robotdescriptor components from the robot's grid into a list
         List <Situated> nearRobots= grid.get(ComponentType.robot);
         System.out.println("size nearrobots  : "+nearRobots.size());
         for (Situated s:nearRobots){
             System.out.println(s.toString());
-            //System.out.println("this proie : "+this.proie+" victim team : " +s.getTeam()+" equal condition : "+!s.equals(this));
+            //System.out.println("this predatory : "+this.predatory+" victim team : " +s.getTeam()+" equal condition : "+!s.equals(this));
             //System.out.println("this team : "+this.team+" s team : "+s.getTeam());
-            //We check if the robot is a potential "proie"
-            if (s.getTeam().equals(this.proie)  && !s.equals(this)){
-                System.out.println(team+id+" a trouve une proie");
+            //We check if the robot is a potential "predatory"
+
+            if (s.getTeam().equals(this.predatory)  && !s.equals(this)){
                 RobotDescriptor rb=(RobotDescriptor) s;
                 int closestRobotId= rb.getId();
-                //We calculate the distance that separates this robot from its proie
+                //We calculate the distance that separates the two robots, if the distance is smaller than the one defined in the distance variable, ditance is updated
                 double distanceUpdate = getDistance(s.getX(), s.getY());
+                System.out.println(team+id+" a trouve une predatory");
                 System.out.println("distance : "+distanceUpdate);
                 if (distanceUpdate <= distance) {
                     distance = distanceUpdate;
                     official = s;
-                    System.out.println("distance avec le robot le polus proche : "+distance);
+                    System.out.println("distance avec le predator le plus proche : "+distance);
                     //we check if thes robots are in adjacent cells (distance <= 1) in this case the robot is captured or killed depending on the configuration
-                    if (distance <=1){
-                        //if we want to kill the robots
-                            /*killedRobotId=closestRobotId;
-                            System.out.println("Robot id :"+killedRobotId+" is going to die");
-                            System.out.println("attacker with position x:"+x+" y:"+y +"victim with position x:"+s.getX()+" y:"+s.getY() );
-                            JSONObject killedRobot = new JSONObject();
-                            killedRobot.put("id", ""+closestRobotId);
-                            killedRobot.put("name", ""+((RobotDescriptor) s).getName());
-                            killedRobot.put("x", ""+s.getX());
-                            killedRobot.put("y", ""+s.getY());
-                            killedRobot.put("team", s.getTeam());
-                            grid.removeSituatedComponent(s.getX(),s.getY());
-                            //System.out.println("MOVE MOVE " + xo + " " + yo + " --> " + x + " " + y);
-                            clientMqtt.publish("robot/killed", killedRobot.toJSONString());*/
-                        System.out.println(team+id+" a capturé une proie");
-                        System.out.println("la proie :"+s.getTeam()+closestRobotId);
-                        //si on veut changer d'équipe :
-                        //On va publier un topic qui sera reçu par le HunterTurtlbot capturé pour le lui indiquer
-                        JSONObject capturedRobot = new JSONObject();
-                        capturedRobot.put("id", ""+closestRobotId);
-                        capturedRobot.put("name", ""+((RobotDescriptor) s).getName());
-                        capturedRobot.put("team", s.getTeam());
-                        clientMqtt.publish("robot"+closestRobotId+"/captured",capturedRobot.toJSONString());
-                       ((RobotDescriptor) s).setTeam(this.team);//On update notre propre grille
-                    }
                 }
+            }else if (s.getTeam().equals(this.proie)  && !s.equals(this)){ //We check if the robot is a potential "proie" adjacent to the robot
+                RobotDescriptor rb=(RobotDescriptor) s;
+                int closestRobotId= rb.getId();
+                //We calculate the distance that separates the two robots
+                double distanceUpdate = getDistance(s.getX(), s.getY());
+                System.out.println("distance : "+distanceUpdate);
+                System.out.println("distance avec le robot le polus proche : "+distance);
+                //we check if thes robots are in adjacent cells (distance <= 1) in this case the robot is captured or killed depending on the configuration
+                if (distanceUpdate <=1){
+                    System.out.println(team+id+" a capturé une predatory");
+                    System.out.println("la predatory :"+s.getTeam()+closestRobotId);
+                    //si on veut changer d'équipe :
+                    //On va publier un topic qui sera reçu par le HunterTurtlbot capturé pour le lui indiquer
+                    JSONObject capturedRobot = new JSONObject();
+                    capturedRobot.put("id", ""+closestRobotId);
+                    capturedRobot.put("name", ""+((RobotDescriptor) s).getName());
+                    capturedRobot.put("team", s.getTeam());
+                    clientMqtt.publish("robot"+closestRobotId+"/captured",capturedRobot.toJSONString());
+                    ((RobotDescriptor) s).setTeam(this.team);//On update notre propre grille
+                }
+
             }
         }
         /*System.out.println("le robot le plus proche de : " + this + " est " + official);
@@ -266,9 +272,8 @@ public class HunterTurtleBot2 extends Turtlebot {
     }
 
     public Orientation setNewOrientation(Situated s) {
-        /*In the function, we manually set the orientation of the turtlebot :
-            - we set the orientation depending of the relatice position of the two robots (we separate the cases below)
-            - We chose to directly change the orientation without calling the rotating functions (moveLeft(), moveRight()) for the simulation to be more visual
+        /*We reuse the same function as in HunterTurtleBot, except that we set the opposite orientation at the end because
+        we want to run away from the predatory
          */
         Orientation orientationN = Orientation.up;
 
@@ -318,7 +323,11 @@ public class HunterTurtleBot2 extends Turtlebot {
         } else if (s.getX() < getX() && s.getY() == getY()) {
             orientationN = Orientation.down;
         }
-
+        //We set the opposite orientation:
+        if(orientationN==Orientation.down)orientationN=Orientation.up;
+        else if (orientationN==Orientation.up)orientationN=Orientation.down;
+        else if (orientationN==Orientation.right)orientationN=Orientation.left;
+        else if (orientationN==Orientation.left)orientationN=Orientation.right;
         return orientationN;//the new Orientation
     }
 
@@ -330,14 +339,14 @@ public class HunterTurtleBot2 extends Turtlebot {
         System.out.println(id+" team : "+this.team);
         if (closest == null) {
             //randomOrientation();
-            //By default, if no proie is found , the robot moves forward. Another option is to set a random orientation
+            //By default, if no predatory is found , the robot moves forward. Another option is to set a random orientation
             if(possibleToMovForward(ec))moveForward();//We check if a forward move is possible, if not, we change the orientation
             else moveLeft(1);
         } else {
-            //If a proie is found we set the orientation is set and we move forward
+            //If a predatory is found we set the orientation is set and we move forward
             //System.out.println("change l'orientation de " + this);
             orientation = setNewOrientation(closest);
-           // System.out.println("l'orientation est maintenant : " + orientation);
+            // System.out.println("l'orientation est maintenant : " + orientation);
             String actionr = "move_forward";
             String result = x + "," + y + "," + orientation + "," + grid.getCellsToString(y,x) + ",";
             for(int i = 0; i < step; i++) {

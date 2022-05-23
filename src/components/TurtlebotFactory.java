@@ -96,7 +96,7 @@ public class TurtlebotFactory implements SimulationComponent {
 							System.out.println("my_robots now : "+mesRobots);
 							break;
 					}
-					((HunterTurtleBot2) t).setKilledRobotId(0);
+					((HunterTurtleBot2()()) t).setKilledRobotId(0);
 				}*/
 			}
 			try {

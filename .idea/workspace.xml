@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="Comments added">
+    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="comments added to the modified files">
+      <change afterPath="$PROJECT_DIR$/src/burger/RunAwayTurtleBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/TestAppli.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/TestAppli.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653313513894</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="comments added to the modified files">
+      <created>1653314777911</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1653314777911</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,7 +171,8 @@
     <MESSAGE value="print different teams" />
     <MESSAGE value="capture works pretty good" />
     <MESSAGE value="Comments added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comments added" />
+    <MESSAGE value="comments added to the modified files" />
+    <option name="LAST_COMMIT_MESSAGE" value="comments added to the modified files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
