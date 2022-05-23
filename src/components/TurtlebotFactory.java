@@ -14,6 +14,10 @@ import java.util.Map;
 
 /* This class defines the different operations that the robot can do on the grid */
 
+/*No big changes here, except in the schedule() function.We adapted the factory() and init() function to our
+robots , particulary by adding "team" attributes when needed*/
+
+
 public class TurtlebotFactory implements SimulationComponent {	
 	
 	private HashMap<String, Turtlebot> mesRobots;
@@ -84,7 +88,7 @@ public class TurtlebotFactory implements SimulationComponent {
 				//System.out.println("Robot : "+rb);
 				//System.out.println("RobotKilledID : "+rb.getKilledRobotId());
 				//System.out.println("test "+mesRobots.get(rb.getKilledRobotId()) );
-				//bloc suivant à utiliser si on veut faire mourir les robots
+				//bloc suivant à utiliser si on veut faire mourir les robots au lieu de les faire changer d'équipe
 				/*if (rb.getKilledRobotId()!=0){
 					if (mesRobots.get("burger_"+rb.getKilledRobotId())!=null){
 							mesRobots.remove("burger_"+rb.getKilledRobotId());
@@ -117,7 +121,7 @@ public class TurtlebotFactory implements SimulationComponent {
 		jo.put("team", t.getTeam());
 		jo.put("id", t.getId()+"");
 
-		System.out.println("FROM FACTORY : robot"+t.getId()+" team : "+t.getTeam());
+		//System.out.println("FROM FACTORY : robot"+t.getId()+" team : "+t.getTeam());
 
 		clientMqtt.publish("robot/grid", jo.toJSONString());
 	}

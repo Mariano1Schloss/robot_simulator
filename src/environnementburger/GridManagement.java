@@ -19,6 +19,13 @@ import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+/* Some changes have been made in this class :
+	- We had to take account that robot can switch team so each team is assigned to different color
+	-Every time a robot must be printed in the display window, we look at its color and set the block color accordingly
+	- When the RobotDescriptors for the grid are created ("configuration/nBRobots") we create three teams with equal size with the different teams (using the variable nBRobot from prop.ini file)
+	- We subscribed to two  other topics to deal with thes case wher a robot gets killed or captured ("robot/captured", "robot/killed")
+	- We don't need the notion of "goals" in our problem so I have commented the relative blocs
+ */
 
 public class GridManagement implements SimulationComponent {
 	protected Grid grid;
@@ -36,6 +43,7 @@ public class GridManagement implements SimulationComponent {
 	protected int displayheight;
 	protected String displaytitle;
 	protected Color colorrobot;
+	//Color variables assigned to the teams
 	protected Color colorvipere;
 	protected Color colorpoule;
 	protected Color colorrenard;
@@ -53,8 +61,7 @@ public class GridManagement implements SimulationComponent {
 		clientMqtt.subscribe("robot/nextPosition");	
 		clientMqtt.subscribe("configuration/nbRobot");	
 		clientMqtt.subscribe("configuration/nbObstacle");	
-		//clientMqtt.subscribe("configuration/nbRobot");
-		clientMqtt.subscribe("configuration/seed");	
+		clientMqtt.subscribe("configuration/seed");
 		clientMqtt.subscribe("configuration/display");	
 		clientMqtt.subscribe("configuration/debug");	
 		clientMqtt.subscribe("configuration/robot/grid");	
@@ -293,7 +300,7 @@ public class GridManagement implements SimulationComponent {
 				int[] posPoule = grid.locate();
 				int[] posRenard = grid.locate();
 				//int[] posRobot = grid.locate();
-
+				//we create three teams with equal size with the different teams (using the variable nBRobot from prop.ini file
 
 				grid.putSituatedComponent(new RobotDescriptor(posVipere, id, GridManagement.turtlebotName+id,"vipere"));
 				id++;
@@ -311,7 +318,7 @@ public class GridManagement implements SimulationComponent {
 					cg.refresh();
 				}				
 			}
-
+			//We are not using this part as we are not using goals
 			   //création aléatoire des goals
 			/*for (int i = 2; i < nbRobots+2; i++) {
 				int[] pos = grid.locate();
@@ -385,6 +392,7 @@ public class GridManagement implements SimulationComponent {
 			init();
         }
 		else if (topic.contains("robot/killed")) {
+			//We remove the killed robot from the grid and set the cell
 			int xR = Integer.parseInt((String)content.get("x"));
 			int yR=Integer.parseInt((String)content.get("y"));
 			int id=Integer.parseInt((String)content.get("id"));
@@ -395,26 +403,17 @@ public class GridManagement implements SimulationComponent {
 			}
 		}
 		else if (topic.contains("robot/captured")) {
-			int id=Integer.parseInt((String)content.get("id"));
+			int id=Integer.parseInt((String)content.get("id"));//The id of the captured Robot
 			String team=(String) content.get("team");
 			String newTeam=(String) content.get("newteam");
-			RobotDescriptor capturedRobot=grid.getById(id);
+			RobotDescriptor capturedRobot=grid.getById(id);//We search the corresponding Robot in the Grid
 			System.out.println("Robot id : "+id+" from team "+team+" has beeen captured");
 			if(capturedRobot!=null){
-				capturedRobot.setTeam(newTeam);
+				capturedRobot.setTeam(newTeam);//We set the robot team
 				System.out.println("newteam : "+newTeam);
 				System.out.println(capturedRobot.toString());
 			}else System.out.println("no robot with id : "+id+"has been found");
 		}
-        /*else if(topic.contains("burger_5/position")) {
-        	int x1 = Integer.parseInt((String)content.get("x1"));
-        	int y1 = Integer.parseInt((String)content.get("y1"));
-        	int x2 = Integer.parseInt((String)content.get("x2"));
-        	int y2 = Integer.parseInt((String)content.get("y2"));
-            moveRobot(5,x1,y1,x2,y2);
-            if(display == 1)
-				refresh();
-        } */       
         else if(display == 1) {
 			if (topic.contains("display/width")) {
     	        displaywidth = Integer.parseInt((String)content.get("displaywidth"));

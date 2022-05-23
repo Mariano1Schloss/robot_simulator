@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="capture works pretty good">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_15_05_2022_17_55_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_15_05_2022_17_55__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_15_05_2022_17_58_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_15_05_2022_17_58__Changes_.xml" beforeDir="false" />
+    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="Comments added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prop.ini" beforeDir="false" afterPath="$PROJECT_DIR$/prop.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/TestAppli.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/TestAppli.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653242830247</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Comments added">
+      <created>1653313513894</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1653313513894</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,24 +163,25 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="print different teams" />
     <MESSAGE value="capture works pretty good" />
-    <option name="LAST_COMMIT_MESSAGE" value="capture works pretty good" />
+    <MESSAGE value="Comments added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comments added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/TestAppli.java</url>
-          <line>111</line>
+          <line>113</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/components/TurtlebotFactory.java</url>
-          <line>80</line>
+          <line>84</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/environnementburger/GridManagement.java</url>
-          <line>338</line>
+          <line>345</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
