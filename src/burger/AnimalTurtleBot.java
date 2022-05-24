@@ -4,7 +4,6 @@ import model.ComponentType;
 import model.Situated;
 import components.Turtlebot;
 import model.EmptyCell;
-import model.UnknownCell;
 import model.Grid;
 import mqtt.Message;
 
@@ -15,32 +14,38 @@ import model.RobotDescriptor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.List;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-public class HunterTurtleBot2 extends Turtlebot {
+/*
+Cette classe implémente le modèle de robots utile à notre problème. Ce type de robots a deux caractéristiques essentielles :
+    - Son équipe (variable team renard/vipere/poule) à laquelle est attribuée une proie et un prédateur
+    celle-ci est succeptible de changer quand  les robots sont capturés (elle change et devient l'équipe du chasseur qui l'a capturé)
+    - Une stratégie, qui va influencer le comportement des robots en fonction des positions des proies et des prédateurs environnants
+    pour l'instant les stratégies sont liées aux équipes et elles changent par conséquent au changement d'équipe. L'impact des stratégies
+    se retrouve dans la fonction move() qui va appeler selon les cas des fonctions différentes d'étude des voisins et de mise à jour de l'orientation du robot
+ */
+public class AnimalTurtleBot extends Turtlebot {
     protected Random rnd;
     protected Grid grid;
     protected String proie;//variable that describes the team that the robot is hunting
     protected String predatory;//variable that describes the team that the robot is running hunted by
     //Variable used only if we want the captured robot to be removed (see  getClosest below,schedule function in Turtlbotfactory and killed/robot topic in GridManagement)
-    protected int killedRobotId;
     protected String currentStrategy;
     protected String strategyPoule;
     protected String strategyRenard;
     protected String strategyVipere;
 
-    public HunterTurtleBot2(int id, String name, int seed, int field, Message clientMqtt, int debug, String team, String currentStrategy,String strategyPoule,String strategyRenard,String strategyVipere) {
+    public AnimalTurtleBot(int id, String name, int seed, int field, Message clientMqtt, int debug, String team, String currentStrategy, String strategyPoule, String strategyRenard, String strategyVipere) {
         super(id, name, seed, field, clientMqtt, debug,team);
-        killedRobotId=0;
         //We define the proie variable regarding the Robot team
         if (team.equals("vipere")) proie="renard";
         else if (team.equals("renard"))proie="poule";
         else if (team.equals("poule"))proie="vipere";
+
         //We define the predatory variable regarding the Robot team
         if (team.equals("vipere")) predatory="poule";
         else if (team.equals("renard"))predatory="vipere";
         else if (team.equals("poule"))predatory="renard";
+
         this.currentStrategy=currentStrategy;
         this.strategyPoule=strategyPoule;
         this.strategyRenard=strategyRenard;
@@ -50,15 +55,6 @@ public class HunterTurtleBot2 extends Turtlebot {
     public String getProie() {return proie;}
 
     public void setProie(String proie) {this.proie = proie;}
-
-    public int getKilledRobotId() {
-        return killedRobotId;
-    }
-
-    public void setKilledRobotId(int killedRobotId) {
-        this.killedRobotId = killedRobotId;
-    }
-
 
 
     //Subscribe to the topics we are interested in
@@ -78,6 +74,7 @@ public class HunterTurtleBot2 extends Turtlebot {
             JSONArray ja = (JSONArray)content.get("cells");
             //We put the Robotdescriptor components from the robot's grid into a list
             List<Situated> ls = grid.get(ComponentType.robot);
+            //we initiate the variable robotsInTheActualizedGrid that will contain the ids from the robots in the updated grid (the one send by GrdManagement)
             List <Integer> robotsInTheActualizedGrid=new ArrayList<Integer>();
 
             for(int i=0; i < ja.size(); i++) {
@@ -97,7 +94,7 @@ public class HunterTurtleBot2 extends Turtlebot {
                     for(Situated sss:ls) {
                         /*Je sépare les cas où sss=this ou non car dans un cas sss est de type Turtlebot, dans les autres RobotDescriptor*/
                         if (sss.equals(this) ){
-                            HunterTurtleBot2 rd = (HunterTurtleBot2)sss;
+                            AnimalTurtleBot rd = (AnimalTurtleBot)sss;
                             if(rd.getId() == idr) {
                                 grid.moveSituatedComponent(rd.getX(), rd.getY(), xo, yo);
                                 findr = true;

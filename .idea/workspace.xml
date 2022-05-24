@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="created RunAwayTurtleBot Class">
+    <list default="true" id="9b668534-abaf-41c1-932c-feae36002714" name="Changes" comment="merged two strategies into HunterTurtleBot2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prop.ini" beforeDir="false" afterPath="$PROJECT_DIR$/prop.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/burger/RunAwayTurtleBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/burger/RunAwayTurtleBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/burger/AnimalTurtleBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/burger/HunterTurtlebot.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TurtlebotFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/environnementburger/GridManagement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/TestAppli.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/TestAppli.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +64,7 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/burger/HunterTurtleBot2.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/burger/AnimalTurtleBot.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/prop.ini" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/components/TurtlebotFactory.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/TestAppli.java" root0="FORCE_HIGHLIGHTING" />
@@ -162,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653318328645</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="merged two strategies into HunterTurtleBot2">
+      <created>1653416242552</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653416242552</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -183,19 +188,20 @@
     <MESSAGE value="Comments added" />
     <MESSAGE value="comments added to the modified files" />
     <MESSAGE value="created RunAwayTurtleBot Class" />
-    <option name="LAST_COMMIT_MESSAGE" value="created RunAwayTurtleBot Class" />
+    <MESSAGE value="merged two strategies into HunterTurtleBot2" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged two strategies into HunterTurtleBot2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/TestAppli.java</url>
-          <line>116</line>
+          <line>118</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/components/TurtlebotFactory.java</url>
-          <line>88</line>
+          <line>84</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

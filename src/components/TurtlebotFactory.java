@@ -1,13 +1,9 @@
 package components;
 
 import burger.*;
-import model.ComponentType;
 import mqtt.Message;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import mqtt.Message;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +11,7 @@ import java.util.Map;
 /* This class defines the different operations that the robot can do on the grid */
 
 /*No big changes here, except in the schedule() function.We adapted the factory() and init() function to our
-robots , particulary by adding "team" attributes when needed*/
+robots , particulary by adding "team" and "strategies" attributes when needed*/
 
 
 public class TurtlebotFactory implements SimulationComponent {	
@@ -88,19 +84,6 @@ public class TurtlebotFactory implements SimulationComponent {
 			for(Turtlebot t: mesRobots.values()) {
 				updateGrid(t);
 				moveRobot(t);
-				//System.out.println("Robot : "+rb);
-				//System.out.println("RobotKilledID : "+rb.getKilledRobotId());
-				//System.out.println("test "+mesRobots.get(rb.getKilledRobotId()) );
-				//bloc suivant à utiliser si on veut faire mourir les robots au lieu de les faire changer d'équipe
-				/*if (rb.getKilledRobotId()!=0){
-					if (mesRobots.get("burger_"+rb.getKilledRobotId())!=null){
-							mesRobots.remove("burger_"+rb.getKilledRobotId());
-							System.out.println("Robot "+rb.getProie()+rb.getKilledRobotId()+"has been killed by"+rb.getTeam()+rb.getId());
-							System.out.println("my_robots now : "+mesRobots);
-							break;
-					}
-					((HunterTurtleBot2()()) t).setKilledRobotId(0);
-				}*/
 			}
 			try {
 				Thread.sleep(waittime);
@@ -200,7 +183,7 @@ public class TurtlebotFactory implements SimulationComponent {
 	    	if(debug == 1) {
 	    		System.out.println("Create simulated robot");
 	    	}
-			turtle = new HunterTurtleBot2(id, name, seed, field, clientMqtt, debug,team,currentStrategy,strategyPoule,strategyRenard,strategyVipere);
+			turtle = new AnimalTurtleBot(id, name, seed, field, clientMqtt, debug,team,currentStrategy,strategyPoule,strategyRenard,strategyVipere);
 	    	if(debug==2 && sttime != null) {
 	    		turtle.setLog(sttime);
 	    	}	    	

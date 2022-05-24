@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;  
 /* No big changes here , except that we took into account the fact that robots have different colors corresponding to their teams
 	(new COLOR variables + Publishing of new topics "display/team" )
+	AND
+	strategies (depending on the team) (variables STRATEGY+TEAM which are transmitted through the topic "configuration/nbRobot"
  */
 public class TestAppli {
 	
