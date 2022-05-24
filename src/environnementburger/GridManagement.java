@@ -304,9 +304,9 @@ public class GridManagement implements SimulationComponent {
 
 				grid.putSituatedComponent(new RobotDescriptor(posVipere, id, GridManagement.turtlebotName+id,"vipere"));
 				id++;
-				grid.putSituatedComponent(new RobotDescriptor(posPoule, id, GridManagement.turtlebotName+id,"renard"));
+				grid.putSituatedComponent(new RobotDescriptor(posRenard, id, GridManagement.turtlebotName+id,"renard"));
 				id++;
-				grid.putSituatedComponent(new RobotDescriptor(posRenard, id, GridManagement.turtlebotName+id,"poule"));
+				grid.putSituatedComponent(new RobotDescriptor(posPoule, id, GridManagement.turtlebotName+id,"poule"));
 				id++;
 
 
@@ -352,8 +352,10 @@ public class GridManagement implements SimulationComponent {
             int yr = Integer.parseInt((String)content.get("y"));
             JSONObject jo = gridToJSONObject(xr, yr, fieldr);
             clientMqtt.publish(nameR+idR+"/grid/update", jo.toJSONString());
-			System.out.println("the actual grid : ");
-			grid.display();
+			if(idR==4){
+				System.out.println("the actual grid : ");
+				grid.display();
+			}
         }
 		else if (topic.contains("robot/nextPosition")) {
             publishState(content);

@@ -31,7 +31,11 @@ public class TurtlebotFactory implements SimulationComponent {
 	protected int field;
 	protected String sttime;
 	protected Team team= Team.viperes;
-	
+	protected String strategyPoule;
+	protected String strategyRenard;
+	protected String strategyVipere;
+
+
 	public TurtlebotFactory(String sttime) {
 		this.simulation = 1;
 		this.debug = 0;
@@ -84,7 +88,6 @@ public class TurtlebotFactory implements SimulationComponent {
 			for(Turtlebot t: mesRobots.values()) {
 				updateGrid(t);
 				moveRobot(t);
-				HunterTurtleBot2 rb = (HunterTurtleBot2) t;
 				//System.out.println("Robot : "+rb);
 				//System.out.println("RobotKilledID : "+rb.getKilledRobotId());
 				//System.out.println("test "+mesRobots.get(rb.getKilledRobotId()) );
@@ -181,7 +184,7 @@ public class TurtlebotFactory implements SimulationComponent {
 		clientMqtt.subscribe("configuration/field");
 	}
 //créer un robot
-	public Turtlebot factory(int id, String name, Message clientMqtt, String team) {
+	public Turtlebot factory(int id, String name, Message clientMqtt, String team,String currentStrategy,String strategyPoule, String strategyRenard, String strategyVipere) {
 		if (mesRobots.containsKey(name))
 	    	return mesRobots.get(name);	    
 	    Turtlebot turtle;
@@ -197,8 +200,7 @@ public class TurtlebotFactory implements SimulationComponent {
 	    	if(debug == 1) {
 	    		System.out.println("Create simulated robot");
 	    	}
-	    	turtle = new HunterTurtleBot2(id, name, seed, field, clientMqtt, debug,team);
-	    	//turtle = new SmartTurtlebot(id, name, seed, field, clientMqtt, debug,team);
+			turtle = new HunterTurtleBot2(id, name, seed, field, clientMqtt, debug,team,currentStrategy,strategyPoule,strategyRenard,strategyVipere);
 	    	if(debug==2 && sttime != null) {
 	    		turtle.setLog(sttime);
 	    	}	    	
@@ -243,11 +245,27 @@ public class TurtlebotFactory implements SimulationComponent {
 
 	public void initRobots(JSONObject nbRobot) {
 		int nbr = Integer.parseInt((String) nbRobot.get("nbRobot"));
+		strategyPoule=(String) nbRobot.get("strategyPoule");
+		strategyRenard=(String) nbRobot.get("strategyRenard");
+		strategyVipere=(String) nbRobot.get("strategyVipere");
+		System.out.println("strategy poule :"+strategyPoule);
+		System.out.println("strategy renard :"+strategyRenard);
+		System.out.println("strategy vipere :"+strategyVipere);
+
+
 		if( debug == 1) {
 			System.out.println(nbr);
 		}
-
-		factory(2, turtlebotName + 2, clientMqtt,"vipere");
+		int id=2;
+		for (int i=2; i<nbr/3+2;i++){
+			factory(id,turtlebotName+id,clientMqtt,"vipere",strategyVipere,strategyPoule,strategyRenard,strategyVipere);
+			id++;
+			factory(id,turtlebotName+id,clientMqtt,"renard",strategyRenard,strategyPoule,strategyRenard,strategyVipere);
+			id++;
+			factory(id,turtlebotName+id,clientMqtt,"poule",strategyPoule,strategyPoule,strategyRenard,strategyVipere);
+			id++;
+		}
+		/*factory(2, turtlebotName + 2, clientMqtt,"vipere");
 		factory(3, turtlebotName + 3, clientMqtt,"renard");
 		factory(4, turtlebotName + 4, clientMqtt,"poule");
 		factory(5, turtlebotName + 5, clientMqtt,"vipere");
@@ -258,8 +276,6 @@ public class TurtlebotFactory implements SimulationComponent {
 		factory(10, turtlebotName + 10, clientMqtt,"poule");
 		factory(11, turtlebotName + 11, clientMqtt,"vipere");
 		factory(12, turtlebotName + 12, clientMqtt,"renard");
-		factory(13, turtlebotName + 13, clientMqtt,"poule");
-
-
+		factory(13, turtlebotName + 13, clientMqtt,"poule");*/
 	}
 }

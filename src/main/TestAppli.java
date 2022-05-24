@@ -29,6 +29,9 @@ public class TestAppli {
 	protected static int SEED;
 	protected static int FIELD;
 	protected static int COLUMNS;
+	protected static String STRATEGYPOULE="hunter";
+	protected static String STARTEGYRENARD="runner";
+	protected static String STRATEGYVIPERE="hunter";
 	protected static Color COLORROBOT;
 	protected static Color COLORVIPERE;
 	protected static Color COLORPOULE;
@@ -159,6 +162,9 @@ public class TestAppli {
 		mqttClient.publish("environment/grid",mymes.toJSONString());	
 		mymes = new JSONObject();
 		mymes.put("nbRobot", TestAppli.NBROBOT+"");
+		mymes.put("strategyPoule",STRATEGYPOULE);
+		mymes.put("strategyRenard",STARTEGYRENARD);
+		mymes.put("strategyVipere",STRATEGYVIPERE);
 		mqttClient.publish("configuration/nbRobot", mymes.toJSONString());
 		tf.initTurtle();
 		env.publishInitRobot();
