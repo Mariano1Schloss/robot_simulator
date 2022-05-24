@@ -230,7 +230,7 @@ public class AnimalTurtleBot extends Turtlebot {
         this.grid = grid;
     }
 
-
+//Function that will return the closest proie of the robot
     public Situated getClosestHunter() {
         double distance = Math.pow(10, 30);
         Situated official = null;
@@ -269,7 +269,7 @@ public class AnimalTurtleBot extends Turtlebot {
         }
         return official;
     }
-
+//Function that will return the closest predator of the robot
     public Situated getClosestRunner() {
         double distance = Math.pow(10, 30);
         Situated official = null;
@@ -322,8 +322,10 @@ public class AnimalTurtleBot extends Turtlebot {
 
     public Orientation setNewOrientation(Situated s,boolean isHunting) {
         /*In the function, we manually set the orientation of the turtlebot :
-            - we set the orientation depending of the relatice position of the two robots (we separate the cases below)
+            - we set the orientation depending of the relative position of the two robots (we separate the cases below)
             - We chose to directly change the orientation without calling the rotating functions (moveLeft(), moveRight()) for the simulation to be more visual
+            - The boolean isHunting variable is use to differentiate the scenarios depending on the strategy. By default, the new oriention is defined such as the one
+            that suits the best to get closer from the target. But if we want to run away from the target, the new orientation is flipped
          */
         Orientation orientationN = Orientation.up;
 
